@@ -1,0 +1,71 @@
+# 目标文件：依赖文件
+# (Tab) 要执行的命令
+
+#对于非Windows系统：应当去除.exe后缀；del /f 应当改为 rm -f
+
+# #VERSION 1
+# hello: main.c HW.c
+# 	gcc main.c HW.c -o hello  
+# #或者写为gcc -o main.c HW.c hello
+# #缺点：只要有一个文件更改，所有文件都要重新编译。
+
+# #VERSION 2
+# # $()：引入变量(宏)
+# CC = gcc
+# TARGET = hello
+# OBJ = main.o HW.o
+
+# $(TARGET): $(OBJ)
+# 	$(CC) -o $(TARGET) $(OBJ)
+
+# main.o: main.c
+# 	$(CC) -c main.c
+
+# HW.o: HW.c
+# 	$(CC) -c HW.c
+# #后两部分重复，可以用%通配。
+
+
+# #VERSION 3
+# #.PHONY：伪目标————.PHONY依赖clean。但是.PHONY一定不存在，因此一定可以执行make clean
+# # $@：自动变量，指目标文件
+# # $^: 表示所有的依赖文件
+# # $<：表示第一个依赖文件
+# # %：通配符，所有的.o对应所有的.c
+# CC = gcc
+# TARGET = hello.exe  #windows中，必须加拓展名
+# OBJ = main.o HW.o
+
+# CXXFLAGS = -c -Wall
+
+# $(TARGET): $(OBJ)
+# 	$(CC) -o $@ $^
+
+# %.o: %.c
+# 	$(CC) $(CXXFLAGS) $< -o $@
+
+# .PHONY: clean
+# clean:
+# 	del /f *.o $(TARGET)
+
+
+# VERSION 4
+CC = gcc
+TARGET = hello.exe
+SRC = $(wildcard *.c)
+OBJ = $(patsubst %.c, %.o, $(SRC))
+#直接让所有的.c、.o统一进行，对一切情况适用
+
+CXXFLAGS = -c -Wall
+
+$(TARGET): $(OBJ)
+	$(CC) -o $@ $^
+
+%.o: %.c
+	$(CC) $(CXXFLAGS) $< -o $@
+
+.PHONY: clean
+clean:
+	del /f *.o $(TARGET)
+	@echo done
+
