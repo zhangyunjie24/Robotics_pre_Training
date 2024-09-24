@@ -5,5 +5,6 @@ int main () {
     /*用于测试-Wall指令*/
     print_hello();
     printf("I love programming!\n");
+    printf("this is featQ\n");
     return 0;
 }
