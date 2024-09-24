@@ -1,0 +1,3 @@
+#I have to commit all the files this time, so nothing is here.
+#if I want to remove a file
+#I have to insert "git rm -r --cached <THE_FILE_YOU_NEED_TO_DELETE>"
