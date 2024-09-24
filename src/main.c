@@ -4,5 +4,6 @@ int main () {
     int i;   
     /*用于测试-Wall指令*/
     print_hello();
+    printf("I love programming!\n");
     return 0;
 }
